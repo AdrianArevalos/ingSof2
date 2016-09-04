@@ -10,10 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import ventas.entity.Vendedor;
 
-/**
- *
- * @author mundo
- */
+
 @Stateless
 public class VendedorFacade extends AbstractFacade<Vendedor> {
 

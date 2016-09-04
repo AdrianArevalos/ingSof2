@@ -38,6 +38,8 @@ public class DetallePedido implements Serializable {
     @JoinColumn(name = "id_producto", referencedColumnName = "id_producto", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Producto producto;
+    
+    private int importe;
 
     public DetallePedido() {
     }
@@ -56,6 +58,14 @@ public class DetallePedido implements Serializable {
 
     public void setDetallePedidoPK(DetallePedidoPK detallePedidoPK) {
         this.detallePedidoPK = detallePedidoPK;
+    }
+
+    public int getImporte() {
+        return importe;
+    }
+
+    public void setImporte(int importe) {
+        this.importe = importe;
     }
 
     public Integer getCantidad() {

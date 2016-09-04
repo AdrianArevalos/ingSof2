@@ -24,5 +24,4 @@ public class ClienteFacade extends AbstractFacade<Cliente> {
         super(Cliente.class);
     }
     
-    //funcion que retorna el cliente que se busca en la base de datos
 }

@@ -9,34 +9,30 @@
     </h:head>
     <h:body>
         <h:form>
+            <p:growl autoUpdate="true" showDetail="true" />
             <p:fieldset style="border:6px groove #ccc; background: #D8D8D8;" legend="Venta">
 
             <p:separator/>           
                 <p:column>
                     <h:outputLabel for="cliente" value="Cliente" />
-                    <p:inputText id="cliente" value="#{clienteController.cedulaRuc}"/>
-                    <p:commandButton value="Buscar" action="#{clienteController.buscarCliente()}" update="idNombre, idCedula, idDireccion"/>
+                    <p:inputText id="cliente" value="#{ventasController.cedulaRuc}"/>
+                    <p:commandButton value="Buscar" action="#{ventasController.buscarCliente()}" update="idNombre, idDireccion"/>
                     
-                    <p:selectOneMenu id="idVendedor" value="#{vendedorController.vendedor.cedula}" style="width:200px; height: 30px; float: right">
-                        <f:selectItem  noSelectionOption="true" itemLabel="Seleccione" value="#{null}" />
-                        <f:selectItems value="#{vendedorController.vendedores}" var="ven" itemLabel="#{ven.cedula}, #{ven.apellido}" itemValue="#{ven.cedula}"/>
+                    <h:outputLabel value="Vendedor" />
+                    <p:selectOneMenu id="idVendedor" value="#{ventasController.vendedor.cedula}" style="width:200px; height: 40px;">
+                        <f:selectItems value="#{ventasController.vendedores}" var="ven" itemLabel="#{ven.cedula}, #{ven.apellido}" itemValue="#{ven.cedula}"/>
                     </p:selectOneMenu>
-                    <h:outputLabel value="Vendedor" style="float: right"/>    
+                        
                 </p:column>
                 <br/>
                 <p:column>
                     <h:outputText value="Nombre: " />
-                    <h:outputText id="idNombre" value="#{clienteController.cliente.nombre}, #{clienteController.cliente.apellido}" />
-                </p:column>
-                <br/>
-                <p:column>
-                    <h:outputText value="Cedula o Ruc: " />
-                    <h:outputText id="idCedula" value="#{clienteController.cliente.cedulaRuc}" />
+                    <h:outputText id="idNombre" value="#{ventasController.cliente.nombre}, #{ventasController.cliente.apellido}" />
                 </p:column>
                 <br/>
                 <p:column>
                     <h:outputText value="Direccion: "/>
-                    <h:outputText id="idDireccion" value="#{clienteController.cliente.direccion}" />
+                    <h:outputText id="idDireccion" value="#{ventasController.cliente.direccion}" />
                 </p:column>
                 
                 <br/>
@@ -44,20 +40,22 @@
             <p:separator/>
             <p:panel  header="Producto" style="width: 1300px; float: none">
                 <h:outputText value="Producto" />
-                <p:selectOneMenu id="idProducto" value="#{productoController.producto}" converter="omnifaces.SelectItemsConverter" style="width:200px; height: 30px">
+                <p:selectOneMenu id="idProducto" value="#{ventasController.producto}" converter="omnifaces.SelectItemsConverter" style="width:200px; height: 30px">
                     <f:selectItem  noSelectionOption="true" itemLabel="Seleccione" value="#{null}" />
-                    <f:selectItems value="#{productoController.productos}" var="pro" itemLabel="#{pro.descripcion}" itemValue="#{pro}"/>
+                    <f:selectItems value="#{ventasController.productos}" var="pro" itemLabel="#{pro.descripcion}" itemValue="#{pro}"/>
                 </p:selectOneMenu>
                 <h:outputLabel for="idCantidad" value="Cantidad " />
-                <p:spinner id="idCantidad" value="#{productoController.cantidad}"/>
-                <p:commandButton value="Agregar Producto" action="#{productoController.agregarProducto()}" update="detalle"/>
+                <p:spinner id="idCantidad" value="#{ventasController.cantidad}"/>
+                <p:commandButton value="Agregar Producto" action="#{ventasController.agregarProducto()}" update="detalle"/>
                 <br/>
             </p:panel>
             <br/>
             <p:panel header="Detalle Venta" style="float: left">
                 <h:outputText style="float: right" />
                 <h:outputLabel value="Total de Registros:" style="float: right"/>
-                <p:dataTable  id="detalle" value="#{productoController.lista}" var="det" >
+                <p:dataTable  id="detalle" value="#{ventasController.lista}" var="det" paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" >
                     <p:column headerText="Codigo">
                         <h:outputText value="#{det.producto.idProducto}" />
                     </p:column>
@@ -71,17 +69,12 @@
                         <h:outputText value="#{det.cantidad}"/>
                     </p:column>
                     <p:column headerText="Importe">
-                        <h:outputText value="#{det.producto.precioUnitario}*#{det.cantidad}" />
+                        <h:outputText value="#{det.importe}" />
                     </p:column>
                 </p:dataTable>
                 <br/>
                 <p:column>
-                    <p:commandButton value="Realizar venta" style="float: right; "/>
-                    <p:commandButton value="Eliminar" style="float: right"/>
-                    
-                    <p:commandButton value="Atras" style="float: left" action="/index"/>
-                    <p:commandButton value="Imprimir Factura" style="float: left"/>
-                    
+                    <p:commandButton value="Realizar venta" action="#{ventasController.realizarVenta()}" style="float: right; "/>                   
                     
                 </p:column>
             </p:panel>
