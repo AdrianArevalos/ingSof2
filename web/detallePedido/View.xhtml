@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DetallePedidoViewDlg" widgetVar="DetallePedidoViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewDetallePedidoTitle}" closeOnEscape="true">
+
+            <h:form id="DetallePedidoViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{detallePedidoController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewDetallePedidoLabel_detallePedidoPK_idPedido}"/>
+                        <h:outputText value="#{detallePedidoController.selected.detallePedidoPK.idPedido}" title="#{myBundle.ViewDetallePedidoTitle_detallePedidoPK_idPedido}"/>
+
+                        <h:outputText value="#{myBundle.ViewDetallePedidoLabel_detallePedidoPK_idProducto}"/>
+                        <h:outputText value="#{detallePedidoController.selected.detallePedidoPK.idProducto}" title="#{myBundle.ViewDetallePedidoTitle_detallePedidoPK_idProducto}"/>
+
+                        <h:outputText value="#{myBundle.ViewDetallePedidoLabel_cantidad}"/>
+                        <h:outputText value="#{detallePedidoController.selected.cantidad}" title="#{myBundle.ViewDetallePedidoTitle_cantidad}"/>
+
+                        <h:outputText value="#{myBundle.ViewDetallePedidoLabel_pedido}"/>
+                        <h:outputText value="#{detallePedidoController.selected.pedido.idPedido}"/>
+
+                        <h:outputText value="#{myBundle.ViewDetallePedidoLabel_producto}"/>
+                        <h:outputText value="#{detallePedidoController.selected.producto.descripcion}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('DetallePedidoViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

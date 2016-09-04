@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="VendedorEditDlg" widgetVar="VendedorEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditVendedorTitle}" closeOnEscape="true">
+
+            <h:form id="VendedorEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{vendedorController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditVendedorLabel_cedula}" for="cedula" />
+                        <h:outputText id="cedula" value="#{vendedorController.selected.cedula}" />
+
+                        <p:outputLabel value="#{myBundle.EditVendedorLabel_nombre}" for="nombre" />
+                        <p:inputText id="nombre" value="#{vendedorController.selected.nombre}" title="#{myBundle.EditVendedorTitle_nombre}" size="50" maxlength="50"/>
+
+                        <p:outputLabel value="#{myBundle.EditVendedorLabel_apellido}" for="apellido" />
+                        <p:inputText id="apellido" value="#{vendedorController.selected.apellido}" title="#{myBundle.EditVendedorTitle_apellido}" size="50" maxlength="50"/>
+
+                        <p:outputLabel value="#{myBundle.EditVendedorLabel_fechaIngreso}" for="fechaIngreso" />
+                        <p:calendar id="fechaIngreso" pattern="MM/dd/yyyy" value="#{vendedorController.selected.fechaIngreso}" title="#{myBundle.EditVendedorTitle_fechaIngreso}"  showOn="button"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{vendedorController.save}" value="#{myBundle.Save}" update="display,:VendedorListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('VendedorEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('VendedorEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

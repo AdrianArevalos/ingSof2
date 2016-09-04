@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Agregar Venta</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:fieldset style="border:6px groove #ccc; background: #D8D8D8;" legend="Venta">
+
+            <p:separator/>           
+                <p:column>
+                    <h:outputLabel for="cliente" value="Cliente" />
+                    <p:inputText id="cliente" value="#{clienteController.cedulaRuc}"/>
+                    <p:commandButton value="Buscar" action="#{clienteController.buscarCliente()}" update="idNombre, idCedula, idDireccion"/>
+                    
+                    <p:selectOneMenu id="idVendedor" value="#{vendedorController.vendedor.cedula}" style="width:200px; height: 30px; float: right">
+                        <f:selectItem  noSelectionOption="true" itemLabel="Seleccione" value="#{null}" />
+                        <f:selectItems value="#{vendedorController.vendedores}" var="ven" itemLabel="#{ven.cedula}, #{ven.apellido}" itemValue="#{ven.cedula}"/>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="Vendedor" style="float: right"/>    
+                </p:column>
+                <br/>
+                <p:column>
+                    <h:outputText value="Nombre: " />
+                    <h:outputText id="idNombre" value="#{clienteController.cliente.nombre}, #{clienteController.cliente.apellido}" />
+                </p:column>
+                <br/>
+                <p:column>
+                    <h:outputText value="Cedula o Ruc: " />
+                    <h:outputText id="idCedula" value="#{clienteController.cliente.cedulaRuc}" />
+                </p:column>
+                <br/>
+                <p:column>
+                    <h:outputText value="Direccion: "/>
+                    <h:outputText id="idDireccion" value="#{clienteController.cliente.direccion}" />
+                </p:column>
+                
+                <br/>
+
+            <p:separator/>
+            <p:panel  header="Producto" style="width: 1300px; float: none">
+                <h:outputText value="Producto" />
+                <p:selectOneMenu id="idProducto" value="#{productoController.producto}" converter="omnifaces.SelectItemsConverter" style="width:200px; height: 30px">
+                    <f:selectItem  noSelectionOption="true" itemLabel="Seleccione" value="#{null}" />
+                    <f:selectItems value="#{productoController.productos}" var="pro" itemLabel="#{pro.descripcion}" itemValue="#{pro}"/>
+                </p:selectOneMenu>
+                <h:outputLabel for="idCantidad" value="Cantidad " />
+                <p:spinner id="idCantidad" value="#{productoController.cantidad}"/>
+                <p:commandButton value="Agregar Producto" action="#{productoController.agregarProducto()}" update="detalle"/>
+                <br/>
+            </p:panel>
+            <br/>
+            <p:panel header="Detalle Venta" style="float: left">
+                <h:outputText style="float: right" />
+                <h:outputLabel value="Total de Registros:" style="float: right"/>
+                <p:dataTable  id="detalle" value="#{productoController.lista}" var="det" >
+                    <p:column headerText="Codigo">
+                        <h:outputText value="#{det.producto.idProducto}" />
+                    </p:column>
+                    <p:column headerText="Descripcion">
+                        <h:outputText value="#{det.producto.descripcion}"/>
+                    </p:column>
+                    <p:column headerText="Precio Unitario">
+                        <h:outputText value="#{det.producto.precioUnitario}"/>
+                    </p:column>
+                    <p:column headerText="Cantidad">
+                        <h:outputText value="#{det.cantidad}"/>
+                    </p:column>
+                    <p:column headerText="Importe">
+                        <h:outputText value="#{det.producto.precioUnitario}*#{det.cantidad}" />
+                    </p:column>
+                </p:dataTable>
+                <br/>
+                <p:column>
+                    <p:commandButton value="Realizar venta" style="float: right; "/>
+                    <p:commandButton value="Eliminar" style="float: right"/>
+                    
+                    <p:commandButton value="Atras" style="float: left" action="/index"/>
+                    <p:commandButton value="Imprimir Factura" style="float: left"/>
+                    
+                    
+                </p:column>
+            </p:panel>
+            </p:fieldset>
+        </h:form>
+    </h:body>
+</html>

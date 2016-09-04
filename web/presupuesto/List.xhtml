@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="PresupuestoListForm">
+
+        <p:panel header="#{myBundle.ListPresupuestoTitle}">
+            <p:contextMenu id="PresupuestoDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('PresupuestoListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('PresupuestoListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('PresupuestoListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('PresupuestoListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.PresupuestoMenuItem_idPedido}" icon="ui-icon-search"  actionListener="#{presupuestoController.prepareIdPedido}" update=":PedidoViewForm" oncomplete="PF('PedidoViewDialog').show()" disabled="#{empty presupuestoController.selected.idPedido}"/>  
+                <p:menuitem value="#{myBundle.PresupuestoMenuItem_pedidoCollection}" icon="ui-icon-search"  action="#{presupuestoController.navigatePedidoCollection}" disabled="#{empty presupuestoController.selected.pedidoCollection}" ajax="false"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{presupuestoController.items}"
+                         lazy="false"
+                         rowKey="#{item.idPresupuesto}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{presupuestoController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{presupuestoController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.idPresupuesto}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:PresupuestoDataTableContextMenu" listener="#{presupuestoController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:PresupuestoDataTableContextMenu" listener="#{presupuestoController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{presupuestoController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('PresupuestoListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.idPresupuesto}" filterBy="#{item.idPresupuesto}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPresupuestoTitle_idPresupuesto}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idPresupuesto}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.fecha}" filterBy="#{item.fecha}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPresupuestoTitle_fecha}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fecha}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                </p:column>
+
+
+                <p:column sortBy="#{item.importeTotal}" filterBy="#{item.importeTotal}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPresupuestoTitle_importeTotal}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.importeTotal}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.idPedido.idPedido}" filterBy="#{item.idPedido.idPedido}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPresupuestoTitle_idPedido}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idPedido.idPedido}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{presupuestoController.prepareCreate}" update=":PresupuestoCreateForm" oncomplete="PF('PresupuestoCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":PresupuestoViewForm" oncomplete="PF('PresupuestoViewDialog').show()" disabled="#{empty presupuestoController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":PresupuestoEditForm" oncomplete="PF('PresupuestoEditDialog').show()" disabled="#{empty presupuestoController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{presupuestoController.delete}" update=":growl,datalist" disabled="#{empty presupuestoController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

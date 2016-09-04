@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="PedidoListForm">
+
+        <p:panel header="#{myBundle.ListPedidoTitle}">
+            <p:contextMenu id="PedidoDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('PedidoListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('PedidoListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('PedidoListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('PedidoListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.PedidoMenuItem_detallePedidoCollection}" icon="ui-icon-search"  action="#{pedidoController.navigateDetallePedidoCollection}" disabled="#{empty pedidoController.selected.detallePedidoCollection}" ajax="false"/>  
+                <p:menuitem value="#{myBundle.PedidoMenuItem_presupuestoCollection}" icon="ui-icon-search"  action="#{pedidoController.navigatePresupuestoCollection}" disabled="#{empty pedidoController.selected.presupuestoCollection}" ajax="false"/>  
+                <p:menuitem value="#{myBundle.PedidoMenuItem_facturaCollection}" icon="ui-icon-search"  action="#{pedidoController.navigateFacturaCollection}" disabled="#{empty pedidoController.selected.facturaCollection}" ajax="false"/>  
+                <p:menuitem value="#{myBundle.PedidoMenuItem_cedulaRucCliente}" icon="ui-icon-search"  actionListener="#{pedidoController.prepareCedulaRucCliente}" update=":ClienteViewForm" oncomplete="PF('ClienteViewDialog').show()" disabled="#{empty pedidoController.selected.cedulaRucCliente}"/>  
+                <p:menuitem value="#{myBundle.PedidoMenuItem_nroFactura}" icon="ui-icon-search"  actionListener="#{pedidoController.prepareNroFactura}" update=":FacturaViewForm" oncomplete="PF('FacturaViewDialog').show()" disabled="#{empty pedidoController.selected.nroFactura}"/>  
+                <p:menuitem value="#{myBundle.PedidoMenuItem_idPresupuesto}" icon="ui-icon-search"  actionListener="#{pedidoController.prepareIdPresupuesto}" update=":PresupuestoViewForm" oncomplete="PF('PresupuestoViewDialog').show()" disabled="#{empty pedidoController.selected.idPresupuesto}"/>  
+                <p:menuitem value="#{myBundle.PedidoMenuItem_cedulaVendedor}" icon="ui-icon-search"  actionListener="#{pedidoController.prepareCedulaVendedor}" update=":VendedorViewForm" oncomplete="PF('VendedorViewDialog').show()" disabled="#{empty pedidoController.selected.cedulaVendedor}"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{pedidoController.items}"
+                         lazy="false"
+                         rowKey="#{item.idPedido}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{pedidoController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{pedidoController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.idPedido}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:PedidoDataTableContextMenu" listener="#{pedidoController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:PedidoDataTableContextMenu" listener="#{pedidoController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{pedidoController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('PedidoListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.idPedido}" filterBy="#{item.idPedido}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPedidoTitle_idPedido}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idPedido}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.cedulaRucCliente.cedulaRuc}" filterBy="#{item.cedulaRucCliente.cedulaRuc}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPedidoTitle_cedulaRucCliente}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cedulaRucCliente.cedulaRuc}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.nroFactura.nroFactura}" filterBy="#{item.nroFactura.nroFactura}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPedidoTitle_nroFactura}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nroFactura.nroFactura}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.idPresupuesto.idPresupuesto}" filterBy="#{item.idPresupuesto.idPresupuesto}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPedidoTitle_idPresupuesto}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idPresupuesto.idPresupuesto}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.cedulaVendedor.cedula}" filterBy="#{item.cedulaVendedor.cedula}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPedidoTitle_cedulaVendedor}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cedulaVendedor.cedula}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{pedidoController.prepareCreate}" update=":PedidoCreateForm" oncomplete="PF('PedidoCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":PedidoViewForm" oncomplete="PF('PedidoViewDialog').show()" disabled="#{empty pedidoController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":PedidoEditForm" oncomplete="PF('PedidoEditDialog').show()" disabled="#{empty pedidoController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{pedidoController.delete}" update=":growl,datalist" disabled="#{empty pedidoController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

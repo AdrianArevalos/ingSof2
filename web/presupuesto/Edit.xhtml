@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="PresupuestoEditDlg" widgetVar="PresupuestoEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditPresupuestoTitle}" closeOnEscape="true">
+
+            <h:form id="PresupuestoEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{presupuestoController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditPresupuestoLabel_idPresupuesto}" for="idPresupuesto" />
+                        <h:outputText id="idPresupuesto" value="#{presupuestoController.selected.idPresupuesto}" />
+
+                        <p:outputLabel value="#{myBundle.EditPresupuestoLabel_fecha}" for="fecha" />
+                        <p:calendar id="fecha" pattern="MM/dd/yyyy" value="#{presupuestoController.selected.fecha}" title="#{myBundle.EditPresupuestoTitle_fecha}"  showOn="button"/>
+
+                        <p:outputLabel value="#{myBundle.EditPresupuestoLabel_importeTotal}" for="importeTotal" />
+                        <p:inputText id="importeTotal" value="#{presupuestoController.selected.importeTotal}" title="#{myBundle.EditPresupuestoTitle_importeTotal}"/>
+
+                        <p:outputLabel value="#{myBundle.EditPresupuestoLabel_idPedido}" for="idPedido" />
+                        <p:selectOneMenu id="idPedido" value="#{presupuestoController.selected.idPedido}"  converter="pedidoConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{pedidoController.items}"
+                                           var="idPedidoItem"
+                                           itemValue="#{idPedidoItem}"
+                                           itemLabel="#{idPedidoItem.idPedido.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{presupuestoController.save}" value="#{myBundle.Save}" update="display,:PresupuestoListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('PresupuestoEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('PresupuestoEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

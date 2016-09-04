@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="DetallePedidoCreatePage" lazy="true">
+        <pm:header title="#{myBundle.CreateDetallePedidoTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:DetallePedidoListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="DetallePedidoCreateForm">
+
+                <h:panelGroup id="display" rendered="#{detallePedidoController.selected != null}">
+                    <p:outputPanel>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateDetallePedidoLabel_detallePedidoPK_idPedido}" for="detallePedidoPK_idPedido" />
+                            <p:inputText id="detallePedidoPK_idPedido" value="#{detallePedidoController.selected.detallePedidoPK.idPedido}" title="#{myBundle.CreateDetallePedidoTitle_detallePedidoPK_idPedido}" required="true" requiredMessage="#{myBundle.CreateDetallePedidoRequiredMessage_detallePedidoPK_idPedido}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateDetallePedidoLabel_detallePedidoPK_idProducto}" for="detallePedidoPK_idProducto" />
+                            <p:inputText id="detallePedidoPK_idProducto" value="#{detallePedidoController.selected.detallePedidoPK.idProducto}" title="#{myBundle.CreateDetallePedidoTitle_detallePedidoPK_idProducto}" required="true" requiredMessage="#{myBundle.CreateDetallePedidoRequiredMessage_detallePedidoPK_idProducto}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateDetallePedidoLabel_cantidad}" for="cantidad" />
+                            <p:inputText id="cantidad" value="#{detallePedidoController.selected.cantidad}" title="#{myBundle.CreateDetallePedidoTitle_cantidad}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateDetallePedidoLabel_pedido}" for="pedido" />
+                            <p:selectOneMenu id="pedido" value="#{detallePedidoController.selected.pedido}" required="true" requiredMessage="#{myBundle.CreateDetallePedidoRequiredMessage_pedido}" converter="pedidoConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{pedidoController.items}"
+                                               var="pedidoItem"
+                                               itemValue="#{pedidoItem}"
+                                               itemLabel="#{pedidoItem.idPedido.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateDetallePedidoLabel_producto}" for="producto" />
+                            <p:selectOneMenu id="producto" value="#{detallePedidoController.selected.producto}" required="true" requiredMessage="#{myBundle.CreateDetallePedidoRequiredMessage_producto}" converter="productoConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{productoController.items}"
+                                               var="productoItem"
+                                               itemValue="#{productoItem}"
+                                               itemLabel="#{productoItem.descripcion.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{detallePedidoController.saveNew}" value="#{myBundle.Save}" update="display,:DetallePedidoListPage:DetallePedidoListForm:datalist,:growl" action="#{mobilePageController.navigateWithHistory('pm:DetallePedidoListPage')}"/>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

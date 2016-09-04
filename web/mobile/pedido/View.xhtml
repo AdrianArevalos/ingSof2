@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="PedidoViewPage" lazy="true">
+        <pm:header title="#{myBundle.ViewPedidoTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:PedidoListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="PedidoViewForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{pedidoController.selected != null}">
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewPedidoLabel_idPedido}"/>
+                            <h:outputText value="#{pedidoController.selected.idPedido}" title="#{myBundle.ViewPedidoTitle_idPedido}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewPedidoLabel_cedulaRucCliente}"/>
+                            <h:outputText value="#{pedidoController.selected.cedulaRucCliente.cedulaRuc}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewPedidoLabel_nroFactura}"/>
+                            <h:outputText value="#{pedidoController.selected.nroFactura.nroFactura}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewPedidoLabel_idPresupuesto}"/>
+                            <h:outputText value="#{pedidoController.selected.idPresupuesto.idPresupuesto}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewPedidoLabel_cedulaVendedor}"/>
+                            <h:outputText value="#{pedidoController.selected.cedulaVendedor.cedula}"/>
+                        </pm:field>
+                    </p:outputPanel>
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

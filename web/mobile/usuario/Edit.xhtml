@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="UsuarioEditPage" lazy="true">
+        <pm:header title="#{myBundle.EditUsuarioTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:UsuarioListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="UsuarioEditForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{usuarioController.selected != null}">
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditUsuarioLabel_idUsuario}" for="idUsuario" />
+                            <h:outputText id="idUsuario" value="#{usuarioController.selected.idUsuario}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditUsuarioLabel_usuario}" for="usuario" />
+                            <p:inputText id="usuario" value="#{usuarioController.selected.usuario}" title="#{myBundle.EditUsuarioTitle_usuario}" size="30" maxlength="30"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditUsuarioLabel_password}" for="password" />
+                            <p:inputText id="password" value="#{usuarioController.selected.password}" title="#{myBundle.EditUsuarioTitle_password}" size="30" maxlength="30"/>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{usuarioController.save}" value="#{myBundle.Save}" update="#{mobilePageController.updatableWidgets(component,'display,:UsuarioListPage:UsuarioListForm:datalist,:growl')}" action="#{mobilePageController.navigateWithHistory('pm:UsuarioListPage')}"/>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

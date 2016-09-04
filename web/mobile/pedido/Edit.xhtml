@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="PedidoEditPage" lazy="true">
+        <pm:header title="#{myBundle.EditPedidoTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:PedidoListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="PedidoEditForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{pedidoController.selected != null}">
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditPedidoLabel_idPedido}" for="idPedido" />
+                            <h:outputText id="idPedido" value="#{pedidoController.selected.idPedido}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPedidoLabel_cedulaRucCliente}" for="cedulaRucCliente" />
+                            <p:selectOneMenu id="cedulaRucCliente" value="#{pedidoController.selected.cedulaRucCliente}"  converter="clienteConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{clienteController.items}"
+                                               var="cedulaRucClienteItem"
+                                               itemValue="#{cedulaRucClienteItem}"
+                                               itemLabel="#{cedulaRucClienteItem.cedulaRuc.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPedidoLabel_nroFactura}" for="nroFactura" />
+                            <p:selectOneMenu id="nroFactura" value="#{pedidoController.selected.nroFactura}"  converter="facturaConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{facturaController.items}"
+                                               var="nroFacturaItem"
+                                               itemValue="#{nroFacturaItem}"
+                                               itemLabel="#{nroFacturaItem.nroFactura.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPedidoLabel_idPresupuesto}" for="idPresupuesto" />
+                            <p:selectOneMenu id="idPresupuesto" value="#{pedidoController.selected.idPresupuesto}"  converter="presupuestoConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{presupuestoController.items}"
+                                               var="idPresupuestoItem"
+                                               itemValue="#{idPresupuestoItem}"
+                                               itemLabel="#{idPresupuestoItem.idPresupuesto.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPedidoLabel_cedulaVendedor}" for="cedulaVendedor" />
+                            <p:selectOneMenu id="cedulaVendedor" value="#{pedidoController.selected.cedulaVendedor}"  converter="vendedorConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{vendedorController.items}"
+                                               var="cedulaVendedorItem"
+                                               itemValue="#{cedulaVendedorItem}"
+                                               itemLabel="#{cedulaVendedorItem.cedula.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{pedidoController.save}" value="#{myBundle.Save}" update="#{mobilePageController.updatableWidgets(component,'display,:PedidoListPage:PedidoListForm:datalist,:growl')}" action="#{mobilePageController.navigateWithHistory('pm:PedidoListPage')}"/>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

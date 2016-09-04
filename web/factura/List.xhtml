@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="FacturaListForm">
+
+        <p:panel header="#{myBundle.ListFacturaTitle}">
+            <p:contextMenu id="FacturaDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('FacturaListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('FacturaListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('FacturaListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('FacturaListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.FacturaMenuItem_idPedido}" icon="ui-icon-search"  actionListener="#{facturaController.prepareIdPedido}" update=":PedidoViewForm" oncomplete="PF('PedidoViewDialog').show()" disabled="#{empty facturaController.selected.idPedido}"/>  
+                <p:menuitem value="#{myBundle.FacturaMenuItem_pedidoCollection}" icon="ui-icon-search"  action="#{facturaController.navigatePedidoCollection}" disabled="#{empty facturaController.selected.pedidoCollection}" ajax="false"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{facturaController.items}"
+                         lazy="false"
+                         rowKey="#{item.nroFactura}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{facturaController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{facturaController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.nroFactura}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:FacturaDataTableContextMenu" listener="#{facturaController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:FacturaDataTableContextMenu" listener="#{facturaController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{facturaController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('FacturaListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.nroFactura}" filterBy="#{item.nroFactura}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListFacturaTitle_nroFactura}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nroFactura}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.fechaEmision}" filterBy="#{item.fechaEmision}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListFacturaTitle_fechaEmision}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaEmision}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                </p:column>
+
+
+                <p:column sortBy="#{item.montoTotal}" filterBy="#{item.montoTotal}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListFacturaTitle_montoTotal}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.montoTotal}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.idPedido.idPedido}" filterBy="#{item.idPedido.idPedido}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListFacturaTitle_idPedido}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idPedido.idPedido}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{facturaController.prepareCreate}" update=":FacturaCreateForm" oncomplete="PF('FacturaCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":FacturaViewForm" oncomplete="PF('FacturaViewDialog').show()" disabled="#{empty facturaController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":FacturaEditForm" oncomplete="PF('FacturaEditDialog').show()" disabled="#{empty facturaController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{facturaController.delete}" update=":growl,datalist" disabled="#{empty facturaController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

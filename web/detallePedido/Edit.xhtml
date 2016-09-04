@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="DetallePedidoEditDlg" widgetVar="DetallePedidoEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditDetallePedidoTitle}" closeOnEscape="true">
+
+            <h:form id="DetallePedidoEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{detallePedidoController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditDetallePedidoLabel_detallePedidoPK_idPedido}" for="detallePedidoPK_idPedido" />
+                        <h:outputText id="detallePedidoPK_idPedido" value="#{detallePedidoController.selected.detallePedidoPK.idPedido}" />
+
+
+                        <h:outputLabel value="#{myBundle.EditDetallePedidoLabel_detallePedidoPK_idProducto}" for="detallePedidoPK_idProducto" />
+                        <h:outputText id="detallePedidoPK_idProducto" value="#{detallePedidoController.selected.detallePedidoPK.idProducto}" />
+
+                        <p:outputLabel value="#{myBundle.EditDetallePedidoLabel_cantidad}" for="cantidad" />
+                        <p:inputText id="cantidad" value="#{detallePedidoController.selected.cantidad}" title="#{myBundle.EditDetallePedidoTitle_cantidad}"/>
+
+
+                        <h:outputLabel value="#{myBundle.EditDetallePedidoLabel_pedido}" for="pedido" />
+                        <h:outputText id="pedido" value="#{detallePedidoController.selected.pedido}" />
+
+
+                        <h:outputLabel value="#{myBundle.EditDetallePedidoLabel_producto}" for="producto" />
+                        <h:outputText id="producto" value="#{detallePedidoController.selected.producto}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{detallePedidoController.save}" value="#{myBundle.Save}" update="display,:DetallePedidoListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('DetallePedidoEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('DetallePedidoEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

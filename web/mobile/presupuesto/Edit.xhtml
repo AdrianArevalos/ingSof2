@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="PresupuestoEditPage" lazy="true">
+        <pm:header title="#{myBundle.EditPresupuestoTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:PresupuestoListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="PresupuestoEditForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{presupuestoController.selected != null}">
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditPresupuestoLabel_idPresupuesto}" for="idPresupuesto" />
+                            <h:outputText id="idPresupuesto" value="#{presupuestoController.selected.idPresupuesto}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPresupuestoLabel_fecha}" for="fecha" />
+                            <p:calendar id="fecha" pattern="MM/dd/yyyy" value="#{presupuestoController.selected.fecha}" title="#{myBundle.EditPresupuestoTitle_fecha}"  showOn="button"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPresupuestoLabel_importeTotal}" for="importeTotal" />
+                            <p:inputText id="importeTotal" value="#{presupuestoController.selected.importeTotal}" title="#{myBundle.EditPresupuestoTitle_importeTotal}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPresupuestoLabel_idPedido}" for="idPedido" />
+                            <p:selectOneMenu id="idPedido" value="#{presupuestoController.selected.idPedido}"  converter="pedidoConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{pedidoController.items}"
+                                               var="idPedidoItem"
+                                               itemValue="#{idPedidoItem}"
+                                               itemLabel="#{idPedidoItem.idPedido.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{presupuestoController.save}" value="#{myBundle.Save}" update="#{mobilePageController.updatableWidgets(component,'display,:PresupuestoListPage:PresupuestoListForm:datalist,:growl')}" action="#{mobilePageController.navigateWithHistory('pm:PresupuestoListPage')}"/>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

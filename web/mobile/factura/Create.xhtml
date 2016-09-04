@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="FacturaCreatePage" lazy="true">
+        <pm:header title="#{myBundle.CreateFacturaTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:FacturaListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="FacturaCreateForm">
+
+                <h:panelGroup id="display" rendered="#{facturaController.selected != null}">
+                    <p:outputPanel>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateFacturaLabel_fechaEmision}" for="fechaEmision" />
+                            <p:calendar id="fechaEmision" pattern="MM/dd/yyyy" value="#{facturaController.selected.fechaEmision}" title="#{myBundle.CreateFacturaTitle_fechaEmision}"  showOn="button"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateFacturaLabel_montoTotal}" for="montoTotal" />
+                            <p:inputText id="montoTotal" value="#{facturaController.selected.montoTotal}" title="#{myBundle.CreateFacturaTitle_montoTotal}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateFacturaLabel_idPedido}" for="idPedido" />
+                            <p:selectOneMenu id="idPedido" value="#{facturaController.selected.idPedido}"  converter="pedidoConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{pedidoController.items}"
+                                               var="idPedidoItem"
+                                               itemValue="#{idPedidoItem}"
+                                               itemLabel="#{idPedidoItem.idPedido.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{facturaController.saveNew}" value="#{myBundle.Save}" update="display,:FacturaListPage:FacturaListForm:datalist,:growl" action="#{mobilePageController.navigateWithHistory('pm:FacturaListPage')}"/>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

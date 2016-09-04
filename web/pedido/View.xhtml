@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PedidoViewDlg" widgetVar="PedidoViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewPedidoTitle}" closeOnEscape="true">
+
+            <h:form id="PedidoViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{pedidoController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewPedidoLabel_idPedido}"/>
+                        <h:outputText value="#{pedidoController.selected.idPedido}" title="#{myBundle.ViewPedidoTitle_idPedido}"/>
+
+                        <h:outputText value="#{myBundle.ViewPedidoLabel_cedulaRucCliente}"/>
+                        <h:outputText value="#{pedidoController.selected.cedulaRucCliente.cedulaRuc}"/>
+
+                        <h:outputText value="#{myBundle.ViewPedidoLabel_nroFactura}"/>
+                        <h:outputText value="#{pedidoController.selected.nroFactura.nroFactura}"/>
+
+                        <h:outputText value="#{myBundle.ViewPedidoLabel_idPresupuesto}"/>
+                        <h:outputText value="#{pedidoController.selected.idPresupuesto.idPresupuesto}"/>
+
+                        <h:outputText value="#{myBundle.ViewPedidoLabel_cedulaVendedor}"/>
+                        <h:outputText value="#{pedidoController.selected.cedulaVendedor.cedula}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('PedidoViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
